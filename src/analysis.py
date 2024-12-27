@@ -98,17 +98,26 @@ def compare_trends(df, group_col, value_col):
 
 def detect_outliers(df, col):
   """Use box plots to detect outliers in a numerical column."""
+  # Check if the column exists
   if col not in df.columns:
     print(f"Column '{col}' not found in DataFrame.")
     return
 
-  # Check if the column is numeric
-  if not pd.api.types.is_numeric_dtype(df[col]):
+  # Remove NaN values from the column
+  df_filtered = df[df[col].notna()]
+
+  # Ensure the column is numeric
+  if not pd.api.types.is_numeric_dtype(df_filtered[col]):
     print(f"Column '{col}' is not numeric.")
     return
 
+  # Debugging: Print the number of valid entries and the filtered data
+  print(f"Valid entries for '{col}': {len(df_filtered)}")
+  print(df_filtered[col].dropna())
+
+  # Create the box plot
   plt.figure(figsize=(8, 4))
-  sns.boxplot(x=df[col])
+  sns.boxplot(x=df_filtered[col])
   plt.title(f'Box Plot of {col}')
   plt.xlabel(col)
   plt.show()

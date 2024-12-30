@@ -88,6 +88,7 @@ def plot_correlations(df, x_col, y_col, zip_col):
 
 def compare_trends(df, group_col, value_col):
   """Compare the change in a specified column across different groups."""
+  df[group_col] = df[group_col].astype(str)  # Ensure group_col is string
   plt.figure(figsize=(12, 6))
   sns.lineplot(data=df, x=group_col, y=value_col, estimator='mean', ci=None)
   plt.title(f'Trends in {value_col} by {group_col}')
@@ -132,7 +133,7 @@ def produce_visualizations(df):
   else:
     print("Column 'TotalPremium' not found in DataFrame.")
 
-  total_claim_col = 'TotalClaims'  # Ensure this matches your DataFrame
+  total_claim_col = 'TotalClaims'
   if total_claim_col in df.columns:
     # Remove NaN values for plotting
     df = df.dropna(subset=[total_claim_col])
@@ -149,7 +150,7 @@ def produce_visualizations(df):
 
   if 'TotalPremium' in df.columns and 'TotalClaims' in df.columns:
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=df, x='TotalPremium', y='TotalClaims', hue='PostalCode')
+    sns.scatterplot(data=df, x='TotalPremium', y='TotalClaims')
     plt.title('Total Premium vs Total Claim by Zip Code')
     plt.show()
   else:

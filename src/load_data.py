@@ -3,7 +3,7 @@ import pandas as pd
 def txt_to_csv(input_file, output_file):
   try:
     # Read the comma-delimited file into a DataFrame
-    df = pd.read_csv(input_file, delimiter=',', skipinitialspace=True, quotechar='"')
+    df = pd.read_csv(input_file, delimiter='|', skipinitialspace=True)
 
     # Save the DataFrame to a .csv file
     df.to_csv(output_file, index=False)

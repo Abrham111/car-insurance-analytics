@@ -22,6 +22,25 @@ def perform_anova(df, metric1, metric2):
 
   return f_statistic, p_value
 
+def perform_anova_margin(df, profit_margin):
+  """Perform One-Way ANOVA on the specified metric across provinces."""
+  # Group data by Province
+  grouped_data = [group[profit_margin].values for name, group in df.groupby('PostalCode')]
+
+  # Perform One-Way ANOVA
+  f_statistic, p_value = stats.f_oneway(*grouped_data)
+
+  return f_statistic, p_value
+
+def test_risk_difference_gender(data):
+  """
+  Test if there are significant risk differences (Total Claims) between genders.
+  Null Hypothesis: There are no significant risk differences between women and men.
+  """
+  male_group = data[data['Gender'] == 'Male']['TotalClaims']
+  female_group = data[data['Gender'] == 'Female']['TotalClaims']
+  result = stats.ttest_ind(male_group, female_group, equal_var=False)
+  return result.statistic, result.pvalue
 
 def analyze_results(statistic, p_value, alpha=0.05):
   """Analyze the results of the t-test."""
